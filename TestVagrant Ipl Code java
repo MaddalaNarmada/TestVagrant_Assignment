@@ -1,0 +1,193 @@
+**The following code written in java language for the problem statement of ipl team performance calculated based on last 5 matches
+
+
+
+package main;
+import java.util.*;
+
+class IplStats
+{
+	String name;          //creating a data structure storing details of ipl team
+	int point;
+	ArrayList<Character> winLos = new ArrayList<>(5); // here list size given as 5 as we are considering past 5 matches
+	
+	public IplStats(String name, int point, ArrayList<Character> winLos) {
+		super();
+		this.name = name;
+		this.point = point;
+		this.winLos = winLos;
+	}
+}
+//below code for getting consecutive 2 loss 
+public class Test 
+{
+	public static ArrayList<String> consecutive2Loss(ArrayList<IplStats> stats) 
+	{
+		ArrayList<String> res = new ArrayList<>();
+		for(int i=0;i<stats.size();i++)
+		{
+			ArrayList<Character> res1 = stats.get(i).winLos;
+			for(int j=0;j<res1.size()-1;j++)
+			{
+				if(res1.get(j)=='L' && res1.get(j+1)=='L') //here 0th and 0+1th index or 1th and 1+1th...n if index status as L same then we can get 2  consecutive loss
+				{
+					res.add(stats.get(i).name);
+					break;
+				}
+			}
+		}
+		return res; //gives result of team names having 2 consecutive loss
+	}
+	
+	//below code gives consecutive n(1,2,3,4,5) status as per the character Win or Loss
+	public static ArrayList<String> consecutiveNLossWin(ArrayList<IplStats> stats, int n, char ch) 
+	{
+		ArrayList<String> res = new ArrayList<>();
+		for(int i=0;i<stats.size();i++)
+		{
+			ArrayList<Character> res1 = stats.get(i).winLos;
+			for(int j=0;j<res1.size()-n+1;j++)
+			{
+				boolean flag = true;
+				for(int k=j;k<j+n;k++)
+				{
+					if(res1.get(k)!=ch)
+					{
+						flag = false;
+						break;
+					}
+				}
+				if(flag==true)
+				{
+					res.add(stats.get(i).name);
+					break;
+				}
+			}
+		}
+		return res;
+	}
+	//after getting result of above block of code then we can perform average formula of above filtered teams
+	public static double averagePoint(HashMap<String, Integer> hash, ArrayList<String> teamNamesconsN)
+	{
+		double avgPoint = 0.0;
+		for(int i=0;i<teamNamesconsN.size();i++)
+		{
+			String teamName = teamNamesconsN.get(i);
+			if(hash.containsKey(teamName)==true)
+			{
+				avgPoint+=hash.get(teamName);
+			}
+		}
+		return avgPoint/teamNamesconsN.size();
+	}
+	
+	public static void main(String[] args) 
+	{
+		ArrayList<IplStats> stats = new ArrayList<>();  //storing all details of ipl iteams in group list
+		ArrayList<Character> o1 = new ArrayList<>(); //individual list of eact team
+		o1.add('W');
+		o1.add('W');
+		o1.add('L');
+		o1.add('L');
+		o1.add('W');
+		IplStats obj1 = new IplStats("GT",20, o1);
+		stats.add(obj1);
+		ArrayList<Character> o2 = new ArrayList<>();
+		o2.add('W');
+		o2.add('L');
+		o2.add('L');
+		o2.add('W');
+		o2.add('W');
+		IplStats obj2 = new IplStats("LSG",18, o1);
+		stats.add(obj2);
+		ArrayList<Character> o3 = new ArrayList<>();
+		o3.add('W');
+		o3.add('L');
+		o3.add('W');
+		o3.add('L');
+		o3.add('L');
+		IplStats obj3 = new IplStats("RR",16, o3);
+		stats.add(obj3);
+		ArrayList<Character> o4 = new ArrayList<>();
+		o4.add('W');
+		o4.add('W');
+		o4.add('L');
+		o4.add('W');
+		o4.add('L');
+		IplStats obj4 = new IplStats("DC",14, o4);
+		stats.add(obj4);
+		ArrayList<Character> o5 = new ArrayList<>();
+		o5.add('L');
+		o5.add('W');
+		o5.add('W');
+		o5.add('L');
+		o5.add('L');
+		IplStats obj5 = new IplStats("RCB",14, o5);
+		stats.add(obj5);
+		ArrayList<Character> o6 = new ArrayList<>();
+		o6.add('L');
+		o6.add('W');
+		o6.add('W');
+		o6.add('L');
+		o6.add('W');
+		IplStats obj6 = new IplStats("KKR",12, o6);
+		stats.add(obj6);
+		ArrayList<Character> o7 = new ArrayList<>();
+		o7.add('L');
+		o7.add('W');
+		o7.add('L');
+		o7.add('W');
+		o7.add('L');
+		IplStats obj7 = new IplStats("PBKS",12, o7);
+		stats.add(obj7);
+		ArrayList<Character> o8 = new ArrayList<>();
+		o8.add('W');
+		o8.add('L');
+		o8.add('L');
+		o8.add('L');
+		o8.add('L');
+		IplStats obj8 = new IplStats("SRH",12, o8);
+		stats.add(obj8);
+		ArrayList<Character> o9 = new ArrayList<>();
+		o9.add('L');
+		o9.add('L');
+		o9.add('W');
+		o9.add('L');
+		o9.add('W');
+		IplStats obj9 = new IplStats("CSK",8, o9);
+		stats.add(obj9);
+		ArrayList<Character> o10 = new ArrayList<>();
+		o10.add('L');
+		o10.add('W');
+		o10.add('L');
+		o10.add('W');
+		o10.add('W');
+		IplStats obj10 = new IplStats("MI",6, o10);
+		stats.add(obj10);
+		
+		//storing of results of consective 2 loss and printing the output
+		ArrayList<String> teamNamescons2 = consecutive2Loss(stats);
+		System.out.println("Ipl team of 2 consecutive loss--"+teamNamescons2.toString());
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter L for Loss and W for Win : ");
+		char ch = sc.next().charAt(0); //getting user input of either L or W
+		System.out.print("Enter the consecutive number : ");
+		int n = sc.nextInt(); // and the consecutive times we want
+		ArrayList<String> teamNamesconsN = consecutiveNLossWin(stats,n,ch);
+		System.out.println(teamNamesconsN.toString()); //printing the results of team names according to the user given character and no of times
+		
+		HashMap<String,Integer> hash = new HashMap<>();
+		for(int i=0;i<stats.size();i++)
+		{
+			String name = stats.get(i).name;
+			int point = stats.get(i).point;
+			hash.put(name, point);
+		}
+		System.out.println("Hash Map -- "+hash.toString());
+		double avgPoint = averagePoint(hash,teamNamesconsN);
+		System.out.println("Average Point - "+avgPoint);
+	}
+}
+
+							
