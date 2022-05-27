@@ -5,6 +5,8 @@ Test Vagrant coding Assignment
 In the file of Test Vagrant Ipl code which is written in java consists the solution for the problem statement of to print the 2 consective loss status teams and to print the n consective win/loss team and calculate the average of teams based on filtered teams which had got from n consective teams.
 
 
+And in the code starting package which is Main is written which is optional....
+
 The code is developed in the eclipse tool..
 Code can be run as java application.
 
